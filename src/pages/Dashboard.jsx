@@ -1,8 +1,15 @@
-
+import { Info, Repos, User, Search, Navbar } from "../components"
+import LoadingImage from '../images/preloader.gif'
 
 const Dashboard = () => {
   return (
-    <div>Dashboard</div>
+    <main>
+        <Navbar />
+        <Search />
+        <Info />
+        <User />
+        <Repos />
+    </main>
   )
 }
 

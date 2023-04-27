@@ -8,15 +8,16 @@ const Repos = () => {
   const {repos} = useContext(GithubContext)
   // console.log(repos)
 
-  const languages = repos.reduce((total, item) => {
+  let languages = repos.reduce((total, item) => {
     const { language } = item
     if(!language) return total
-    if(!total[language]) total[language] = 1
-    else total[language] = total[language] + 1
+    if(!total[language]) total[language] = {label: language, value: 1}
+    else total[language] = total[language] = {...total[language], value: total[language].value + 1}
 
     return total
   }, {})
 
+  languages = Object.values(languages).sort((a,b) => b.value - a.value).slice(0,5)
   console.log(languages)
 
   const chartData = [
@@ -38,7 +39,7 @@ const Repos = () => {
     <section className="section">
       <Wrapper className="section-center">
       {/* <ExampleChart /> */}
-      <Pie3D data={chartData} />
+      <Pie3D data={languages} />
       </Wrapper>
     </section>
   )

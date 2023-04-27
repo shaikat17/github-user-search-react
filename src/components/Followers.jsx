@@ -1,8 +1,25 @@
+import { useContext } from "react";
 import styled from "styled-components";
+import { GithubContext } from "../context/context";
 
 const Followers = () => {
+    const {followers} = useContext(GithubContext)
+
   return (
-    <div>Followers</div>
+    <Wrapper>
+        <div className="followers">
+            {followers.map((follower, index) => {
+                const {avatar_url, html_url, login} = follower
+                return <article key={index}>
+                    <img src={avatar_url} alt={login} />
+                    <div>
+                        <h4>{login}</h4>
+                    </div>
+                    <a href={html_url}>{html_url}</a>
+                </article>
+            })}
+        </div>
+    </Wrapper>
   )
 }
 
@@ -31,7 +48,7 @@ const Wrapper = styled.article`
     font-size: 1rem;
   }
   .followers {
-    overflow: scroll;
+    overflow-y: scroll;
     height: 260px;
     display: grid;
     grid-template-rows: repeat(auto-fill, minmax(45px, 1fr));

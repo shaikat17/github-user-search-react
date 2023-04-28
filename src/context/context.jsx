@@ -24,19 +24,35 @@ const GithubProvider = ({ children }) => {
   // search user
   const searchGithubUser = async (user) => {
     // toggleError
-    toggleError()
-    setLoading(true)
-    const response = await axios(`${rootUrl}/users/${user}`).catch(err => console.log(err))
+    toggleError();
+    setLoading(true);
+    const response = await axios(`${rootUrl}/users/${user}`).catch((err) =>
+      console.log(err)
+    );
 
     // console.log(response)
 
-    if(response) {
-      setGithubUser(response.data)
+    if (response) {
+      setGithubUser(response.data);
+      const { login, followers_url } = response.data;
+
+      // repos
+      axios(`${rootUrl}/users/${login}/repos?per_page=100`)
+        .then((response) => setRepos(response.data))
+        .catch((err) => console.log(err));
+
+      // https://api.github.com/users/john-smilga/repos?per_page=100
+
+      // followers
+      axios(`${followers_url}?per_page=100`)
+        .then((response) => setFollowers(response.data))
+        .catch((err) => console.log(err));
+      // https://api.github.com/users/john-smilga/followers
     } else {
-      toggleError(true, 'There is no user with that name')
+      toggleError(true, "There is no user with that name");
     }
-    checkRequests()
-    setLoading(false)
+    checkRequests();
+    setLoading(false);
   };
 
   // check rate limit
@@ -65,7 +81,15 @@ const GithubProvider = ({ children }) => {
 
   return (
     <GithubContext.Provider
-      value={{ githubUser, repos, followers, requests, error, searchGithubUser, loading }}
+      value={{
+        githubUser,
+        repos,
+        followers,
+        requests,
+        error,
+        searchGithubUser,
+        loading,
+      }}
     >
       {children}
     </GithubContext.Provider>

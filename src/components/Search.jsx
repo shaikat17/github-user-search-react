@@ -5,7 +5,7 @@ import { GithubContext } from "../context/context";
 
 const Search = () => {
   const [user, setUser] = useState("");
-  const { requests, error, searchGithubUser } = useContext(GithubContext);
+  const { requests, error, searchGithubUser, loading } = useContext(GithubContext);
   // console.log(requests)
 
   // get items from context
@@ -32,7 +32,7 @@ const Search = () => {
               onChange={(e) => setUser(e.target.value)}
               placeholder="enter github user"
             />
-            { requests > 0 && <button type="submit">search</button> }
+            { requests > 0 && !loading && (<button type="submit">search</button>) }
           </div>
         </form>
         <h3>request : {requests} / 60</h3>

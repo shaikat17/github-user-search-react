@@ -9,13 +9,13 @@ import App from './App.jsx'
 import './index.css'
 
 
-import { Error, Login } from './pages'
+import { Error, Login, PrivateRoute } from './pages'
 import { GithubProvider } from './context/context.jsx';
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App></App>,
+    element: <PrivateRoute><App/></PrivateRoute>,
     errorElement: <Error></Error>,
   },
   {

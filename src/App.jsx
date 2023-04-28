@@ -6,9 +6,8 @@ import { Dashboard } from "./pages";
 function App() {
 
   return (
-    <>
       <Dashboard></Dashboard>
-    </>
+    
   );
 }
 

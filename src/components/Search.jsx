@@ -5,7 +5,7 @@ import { GithubContext } from "../context/context";
 
 const Search = () => {
   const [user, setUser] = useState("");
-  const { requests, error } = useContext(GithubContext);
+  const { requests, error, searchGithubUser } = useContext(GithubContext);
   // console.log(requests)
 
   // get items from context
@@ -13,6 +13,7 @@ const Search = () => {
     e.preventDefault();
 
     if (user) {
+      searchGithubUser(user)
     }
   };
 

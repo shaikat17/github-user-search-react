@@ -18,8 +18,24 @@ const GithubProvider = ({ children }) => {
   const [requests, setRequests] = useState(0);
   const [loading, setLoading] = useState(false);
 
-//   error
-const [error, setError] = useState({show: false, msg: ""})
+  //   error
+  const [error, setError] = useState({ show: false, msg: "" });
+
+  // search user
+  const searchGithubUser = async (user) => {
+    // toggleError
+    toggleError()
+    // setLoading(true)
+    const response = await axios(`${rootUrl}/users/${user}`).catch(err => console.log(err))
+
+    // console.log(response)
+
+    if(response) {
+      setGithubUser(response.data)
+    } else {
+      toggleError(true, 'There is no user with that name')
+    }
+  };
 
   // check rate limit
   const checkRequests = () => {
@@ -29,24 +45,26 @@ const [error, setError] = useState({show: false, msg: ""})
           rate: { remaining },
         } = data;
         // remaining = 0
-        setRequests(remaining)
-        if(remaining === 0) {
-            // throw an error
-toggleError(true, 'Sorry, You have exeed your hourly rate limit!')
+        setRequests(remaining);
+        if (remaining === 0) {
+          // throw an error
+          toggleError(true, "Sorry, You have exceed your hourly rate limit!");
         }
       })
       .catch((err) => console.log(err));
   };
   // error
-  const toggleError = (show = false, msg = '') => {
-    setError({show, msg})
-  }
+  const toggleError = (show = false, msg = "") => {
+    setError({ show, msg });
+  };
   useEffect(() => {
     checkRequests();
   }, []);
 
   return (
-    <GithubContext.Provider value={{ githubUser, repos, followers, requests, error }}>
+    <GithubContext.Provider
+      value={{ githubUser, repos, followers, requests, error, searchGithubUser }}
+    >
       {children}
     </GithubContext.Provider>
   );
